@@ -6,10 +6,11 @@
     "license": "UNLICENSED",
     "private": true,
     "dependencies": {
+        "@cap-js/change-tracking": "^1.0.0",
         "@sap/cds": "^7",
-        "express": "^4",
         "@sap/cds-hana": "^2",
         "@sap/xssec": "^3",
+        "express": "^4",
         "passport": "^0"
     },
     "devDependencies": {
