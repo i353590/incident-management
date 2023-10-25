@@ -9,6 +9,7 @@ modules:
   requires:
   - name: incident-management-auth
   - name: incident-management-db
+  - name: incidents-auditlog
   provides:
   - name: srv-api
     properties:
@@ -79,6 +80,11 @@ modules:
     - npm run build:cf
     supported-platforms: []
 resources:
+- name: incidents-auditlog
+  parameters:
+    service-plan: oauth2
+    service: auditlog
+  type: org.cloudfoundry.managed-service
 - name: incident-management-auth
   type: org.cloudfoundry.managed-service
   parameters:
