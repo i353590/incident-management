@@ -46,7 +46,7 @@
                         },
                         "alice": {
                             "roles": [
-                                "support"
+                                "support","admin"
                             ]
                         },
                         "bob": {

@@ -40,7 +40,7 @@ Content-Type: application/json
 {
   "addresses": [
     {
-      "city": "Walldorf",
+      "city": "india",
       "postCode": "69190",
       "streetAddress": "Dietmar-Hopp-Allee 16"
     }
