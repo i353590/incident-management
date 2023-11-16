@@ -8,13 +8,20 @@ modules:
   path: gen/srv
   requires:
   - name: incident-management-auth
+    parameters:
+      config:
+         credential-type: "X509_GENERATED"
   - name: incident-management-db
   provides:
   - name: srv-api
     properties:
       srv-url: ${default-url}
+  properties:
+    AMS_DCL_ROOT: "ams/dcl"
   parameters:
-    buildpack: nodejs_buildpack
+    buildpacks:
+     - https://github.com/SAP/cloud-authorization-buildpack/releases/latest/download/opa_buildpack.zip
+     - nodejs_buildpack
   build-parameters:
     builder: npm
 - name: incident-management-db-deployer
@@ -34,10 +41,6 @@ modules:
     parameters:
       service-key:
         name: incident-management_html_repo_host-key
-  - name: incident-management-auth
-    parameters:
-      service-key:
-        name: incident-management-auth-key
   parameters:
     content:
       instance:
@@ -45,11 +48,6 @@ modules:
         - Name: incidents_incident_management_html_repo_host
           ServiceInstanceName: incident-management-html5-app-host-service
           ServiceKeyName: incident-management_html_repo_host-key
-          sap.cloud.service: incidents
-        - Authentication: OAuth2UserTokenExchange
-          Name: incidents_incident_management_auth
-          ServiceInstanceName: incident-management-auth
-          ServiceKeyName: incident-management-auth-key
           sap.cloud.service: incidents
         existing_destinations_policy: ignore
   build-parameters:
@@ -80,14 +78,11 @@ modules:
     supported-platforms: []
 resources:
 - name: incident-management-auth
-  type: org.cloudfoundry.managed-service
   parameters:
-    config:
-      tenant-mode: dedicated
-      xsappname: incident-management-${org}-${space}
-    path: ./xs-security.json
-    service: xsuaa
-    service-plan: application
+      path: ./ias-config.json
+      service-plan: application
+      service: identity
+  type: org.cloudfoundry.managed-service
 - name: incident-management-db
   type: com.sap.xs.hdi-container
   parameters:
@@ -107,8 +102,7 @@ resources:
             Type: HTTP
             URL: https://ui5.sap.com
           - Authentication: NoAuthentication
-            HTML5.DynamicDestination: true
-            HTML5.ForwardAuthToken: true
+            HTML5.IASDependencyName: incidents-api
             Name: incident-management-srv-api
             ProxyType: Internet
             Type: HTTP
@@ -135,3 +129,4 @@ build-parameters:
     commands:
     - npm install
     - npx cds build --production
+    - npx -p cpy-cli -- cpy "ams" "./gen/srv"

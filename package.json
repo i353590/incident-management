@@ -10,7 +10,8 @@
         "express": "^4",
         "@sap/cds-hana": "^2",
         "@sap/xssec": "^3",
-        "passport": "^0"
+        "passport": "^0",
+        "@sap/ams": "^1.13.1"
     },
     "devDependencies": {
         "@cap-js/sqlite": "^1",
@@ -21,7 +22,8 @@
         "chai-as-promised": "^7.1.1",
         "chai-subset": "^1.6.0",
         "jest": "^29.7.0",
-        "rimraf": "^3.0.2"
+        "rimraf": "^3.0.2",
+        "@sap/ams-dev": "^0.7.1"
     },
     "scripts": {
         "start": "cds-serve",
@@ -46,6 +48,9 @@
                         "alice": {
                             "roles": [
                                 "support"
+                            ],
+                            "policies" : [
+                                "cap.support (Not restricted)"
                             ]
                         },
                         "bob": {
@@ -53,13 +58,28 @@
                                 "support"
                             ]
                         }
+                    
+                    },
+                    "ams" : {
+                        "autoCompile" : true,
+                        "cache" : {
+                            "TTL" : 0
+                        }
                     }
                 }
-            },
-            "[production]": {
-                "db": "hana",
-                "auth": "xsuaa"
-            }
+                
+                
+            } ,     "[production]": {
+                "db": {
+                  "kind": "hana-cloud"
+                },
+                "auth": {
+                  "kind": "ias"
+                },
+                "approuter": {
+                  "kind": "cloudfoundry"
+                }
+              }
         }
     },
     "sapux": [

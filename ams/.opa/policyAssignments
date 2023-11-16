@@ -1,0 +1,21 @@
+{
+    "principal2policies": {
+        "t1": {
+            "alice": [
+                "cap.support (Not restricted)"
+            ],
+            "bob": [],
+            "carol": [],
+            "dave": [],
+            "me": []
+        },
+        "t2": {
+            "erin": [],
+            "fred": []
+        },
+        "": {
+            "yves": [],
+            "incident.support@tester.sap.com": []
+        }
+    }
+}
